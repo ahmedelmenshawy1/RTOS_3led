@@ -10,19 +10,18 @@
 #include "Timer_Interface.h"
 #include "RTOS_Interface.h"
 /********************************/
-static u8 RTOS_u8TasksNumber=0;
+ u8 RTOS_u8TasksNumber=0;
 /****************************************************/
 extern void RTOS_VoidInit(void)
 {
 	/*Comment!: Set Call Back OverFlow Timer0  */
 	Timer_voidOverFlowInt0(RTOS_VoidISRTimer);
+	/*Comment!: Call Schedual  */
+	RTOS_VoidSchedular();
 	/*Comment!: Set Propertiese Of Timer Module  */
 	Timer_VoidInit();
 	/*Comment!: EnableGlobal Interrupt  */
-	ExtInt_EnableGlobalInt();
-	/*Comment!: Call Schedual  */
-	RTOS_VoidSchedular();
-
+	Timer_EnableGlobalInt();
 	return;
 }
 /****************************************************/
@@ -38,7 +37,6 @@ extern u8 RTOS_voidCreateTask(void (*Copy_voidTaskPtr)(void), u8 Copy_u8Periodic
 		TCB[RTOS_u8TasksNumber].RTOS_u8Periodicity = Copy_u8Periodicity;
 		/*Comment!: add  First Delay(Intialization) that fucntion will start in Milesec */
 		TCB[RTOS_u8TasksNumber].RTOS_u8NumberOfTicks = Copy_u8FirstDelay;
-
 		/*Comment!: Increment  Function Number  */
 		RTOS_u8TasksNumber++;
 		/*Comment!: No error  */
@@ -68,7 +66,7 @@ extern u8 RTOS_VoidSchedular(void )
 			{
 				if(TCB[Local_u8Counter].RTOS_u8NumberOfTicks==1)
 				{
-					(TCB[Local_u8Counter].RTOS_VoidPtr)();
+					TCB[Local_u8Counter].RTOS_VoidPtr();
 				}
 				else;
 			}
@@ -105,7 +103,6 @@ extern void RTOS_VoidISRTimer(void )
 			RTOS_VoidSchedular();
 		}
 		else;
-
 	}
 	else;
 	return;

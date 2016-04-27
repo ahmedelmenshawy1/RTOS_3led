@@ -126,7 +126,7 @@ extern u8 Timer_u16NumberOfOverFlowInMileSec(f32 Copy_f32PtrRequiredTimeMileSec)
 	/*Comment: Increment Overflow counter*/
 	Local_u16CounterOverFlow++;
 	/*Comment: if Overflow counter reached exactly number*/
-	if(Local_u16CounterOverFlow >= (u16)Local_f32NumberOfOverFlow)//7
+	if(Local_u16CounterOverFlow >= (u16)Local_f32NumberOfOverFlow+1)//7
 	{
 		if(Local_u8TCNT0Value==0)/*dh hi5sh fy shrt ely 2ablo w b3dha msh hi5sh hna
 		hilainy 7tit 2imh ll TCNT0 3shan y3ml overflow w ygy hna tany w y2om 2ail ok ana wslt ll2imh overflow */
@@ -136,7 +136,7 @@ extern u8 Timer_u16NumberOfOverFlowInMileSec(f32 Copy_f32PtrRequiredTimeMileSec)
 			TCNT0=0;
 		}
 		else;
-		TCNT0=(Timer_u8MaxTimerZeroTick-1)-Local_u8TCNT0Value;
+		TCNT0=(Timer_u8MaxTimerZeroTick-1)-(Local_u8TCNT0Value+1);
 		Local_u8TCNT0Value=0;
 	}
 	else
